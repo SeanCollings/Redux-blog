@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
   renderField(field) {
@@ -19,7 +21,14 @@ class PostsNew extends Component {
   }
 
   onSubmit(values) {
-    console.log(values);
+    // 'Route' tag (index.js)comes with a whole set of helpers and objects
+    // to help with navigation for PostsNew component
+
+    this.props.createPost(values, () => {
+      // Add as a callback
+      // history.push navs bak to a route from one of the 'Route' tags
+      this.props.history.push('/');
+    });
   }
 
   render() {
@@ -68,4 +77,4 @@ function validate(values) {
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew);
+})(connect(null, { createPost })(PostsNew));
